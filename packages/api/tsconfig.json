@@ -1,5 +1,10 @@
 {
   "extends": "@acme/tsconfig/compiled-package.json",
+  "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false,
+    "emitDeclarationOnly": false
+  },
   "include": ["src"],
   "exclude": ["node_modules"]
 }

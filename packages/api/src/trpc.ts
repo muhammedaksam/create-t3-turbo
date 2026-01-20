@@ -6,6 +6,7 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
+import type { OpenApiMeta } from "trpc-to-openapi";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { z, ZodError } from "zod/v4";
@@ -44,21 +45,24 @@ export const createTRPCContext = async (opts: {
  * 2. INITIALIZATION
  *
  * This is where the trpc api is initialized, connecting the context and
- * transformer
+ * transformer. We also add OpenApiMeta to enable REST API endpoint generation.
  */
-const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: superjson,
-  errorFormatter: ({ shape, error }) => ({
-    ...shape,
-    data: {
-      ...shape.data,
-      zodError:
-        error.cause instanceof ZodError
-          ? z.flattenError(error.cause as ZodError<Record<string, unknown>>)
-          : null,
-    },
-  }),
-});
+const t = initTRPC
+  .context<typeof createTRPCContext>()
+  .meta<OpenApiMeta>()
+  .create({
+    transformer: superjson,
+    errorFormatter: ({ shape, error }) => ({
+      ...shape,
+      data: {
+        ...shape.data,
+        zodError:
+          error.cause instanceof ZodError
+            ? z.flattenError(error.cause as ZodError<Record<string, unknown>>)
+            : null,
+      },
+    }),
+  });
 
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)

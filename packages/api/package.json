@@ -3,10 +3,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./src/index.ts"
-    }
+    ".": "./src/index.ts"
   },
   "license": "MIT",
   "scripts": {
@@ -23,12 +20,14 @@
     "@acme/validators": "workspace:*",
     "@trpc/server": "catalog:",
     "superjson": "2.2.3",
+    "trpc-to-openapi": "^3.1.0",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@acme/eslint-config": "workspace:*",
     "@acme/prettier-config": "workspace:*",
     "@acme/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
