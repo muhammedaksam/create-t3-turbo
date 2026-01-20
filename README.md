@@ -17,7 +17,7 @@ There are two ways of initializing an app using the `create-t3-turbo` starter. Y
 or use Turbo's CLI to init your project (use PNPM as package manager):
 
 ```bash
-npx create-turbo@latest -e https://github.com/t3-oss/create-t3-turbo
+npx create-turbo@latest -e https://github.com/muhammedaksam/create-t3-turbo
 ```
 
 ## About
@@ -33,6 +33,10 @@ It uses [Turborepo](https://turborepo.com) and contains:
 .vscode
   └─ Recommended extensions and settings for VSCode users
 apps
+  ├─ api
+  │   ├─ Next.js 16 API Server
+  │   ├─ Centralized tRPC & Auth endpoints
+  │   └─ Runs on port 3002 (configurable via API_PORT)
   ├─ expo
   │   ├─ Expo SDK 54
   │   ├─ React Native 0.81 using React 19
@@ -40,24 +44,26 @@ apps
   │   ├─ Tailwind CSS v4 using NativeWind v5
   │   └─ Typesafe API calls using tRPC
   ├─ nextjs
-  │   ├─ Next.js 15
+  │   ├─ Next.js 16
   │   ├─ React 19
   │   ├─ Tailwind CSS v4
-  │   └─ E2E Typesafe API Server & Client
+  │   └─ Proxies API requests to the API server
   └─ tanstack-start
-      ├─ Tanstack Start v1 (rc)
+      ├─ Tanstack Start v1
       ├─ React 19
       ├─ Tailwind CSS v4
-      └─ E2E Typesafe API Server & Client
+      └─ Calls API server via HTTP for tRPC
 packages
   ├─ api
   │   └─ tRPC v11 router definition
   ├─ auth
-  │   └─ Authentication using better-auth.
+  │   └─ Authentication using better-auth
   ├─ db
-  │   └─ Typesafe db calls using Drizzle & Supabase
+  │   └─ Typesafe db calls using Prisma & PostgreSQL
+  ├─ validators
+  │   └─ Shared Zod validation schemas
   └─ ui
-      └─ Start of a UI package for the webapp using shadcn-ui
+      └─ UI components using shadcn-ui
 tooling
   ├─ eslint
   │   └─ shared, fine-grained, eslint presets
@@ -74,7 +80,7 @@ tooling
 ## Quick Start
 
 > **Note**
-> The [db](./packages/db) package is preconfigured to use Supabase and is **edge-bound** with the [Vercel Postgres](https://github.com/vercel/storage/tree/main/packages/postgres) driver. If you're using something else, make the necessary modifications to the [schema](./packages/db/src/schema.ts) as well as the [client](./packages/db/src/index.ts) and the [drizzle config](./packages/db/drizzle.config.ts). If you want to switch to non-edge database driver, remove `export const runtime = "edge";` [from all pages and api routes](https://github.com/t3-oss/create-t3-turbo/issues/634#issuecomment-1730240214).
+> The [db](./packages/db) package is preconfigured to use Prisma with PostgreSQL. Configure your `DATABASE_URL` in the `.env` file to point to your database.
 
 To get it running, follow the steps below:
 
@@ -92,8 +98,9 @@ pnpm i
 # There is an `.env.example` in the root directory you can use for reference
 cp .env.example .env
 
-# Push the Drizzle schema to the database
-pnpm db:push
+# Generate Prisma client and run migrations
+pnpm db:generate
+pnpm db:migrate
 ```
 
 ### 2. Generate Better Auth Schema
@@ -205,7 +212,7 @@ Let's deploy the Next.js application to [Vercel](https://vercel.com). If you've 
 
 1. Create a new project on Vercel, select the `apps/nextjs` folder as the root directory. Vercel's zero-config system should handle all configurations for you.
 
-2. Add your `POSTGRES_URL` environment variable.
+2. Add your `DATABASE_URL` environment variable.
 
 3. Done! Your app should successfully deploy. Assign your domain and use that instead of `localhost` for the `url` in the Expo app so that your Expo app can communicate with your backend when you are not in development.
 
@@ -219,7 +226,7 @@ Deploying your Expo application works slightly differently compared to Next.js o
 
 1. Make sure to modify the `getBaseUrl` function to point to your backend's production URL:
 
-   <https://github.com/t3-oss/create-t3-turbo/blob/656965aff7db271e5e080242c4a3ce4dad5d25f8/apps/expo/src/utils/api.tsx#L20-L37>
+   <https://github.com/muhammedaksam/create-t3-turbo/blob/656965aff7db271e5e080242c4a3ce4dad5d25f8/apps/expo/src/utils/api.tsx#L20-L37>
 
 2. Let's start by setting up [EAS Build](https://docs.expo.dev/build/introduction), which is short for Expo Application Services. The build service helps you create builds of your app, without requiring a full native development setup. The commands below are a summary of [Creating your first build](https://docs.expo.dev/build/setup).
 
@@ -280,6 +287,8 @@ Deploying your Expo application works slightly differently compared to Next.js o
 9. Done! Now that you have created your production build, submitted it to the stores, and installed EAS Update, you are ready for anything!
 
 ## References
+
+[t3-oss/create-t3-turbo](https://github.com/t3-oss/create-t3-turbo) for the original template.
 
 The stack originates from [create-t3-app](https://github.com/t3-oss/create-t3-app).
 
