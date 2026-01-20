@@ -6,11 +6,11 @@
       "dependsOn": ["^topo"]
     },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^db:generate", "^build"],
       "outputs": [".cache/tsbuildinfo.json", "dist/**"]
     },
     "dev": {
-      "dependsOn": ["^dev"],
+      "dependsOn": ["^db:generate", "^dev"],
       "cache": false,
       "persistent": false
     },
@@ -43,10 +43,20 @@
     "ui-add": {
       "cache": false,
       "interactive": true
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false,
+      "interactive": true
+    },
+    "db:deploy": {
+      "cache": false
     }
   },
   "globalEnv": [
-    "POSTGRES_URL",
+    "DATABASE_URL",
     "AUTH_DISCORD_ID",
     "AUTH_DISCORD_SECRET",
     "AUTH_REDIRECT_PROXY_URL",
