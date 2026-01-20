@@ -8,7 +8,6 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 
 import type { RouterOutputs } from "@acme/api";
-import { CreatePostSchema } from "@acme/db/schema";
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 import {
@@ -20,6 +19,7 @@ import {
 } from "@acme/ui/field";
 import { Input } from "@acme/ui/input";
 import { toast } from "@acme/ui/toast";
+import { CreatePostSchema } from "@acme/validators";
 
 import { AuthShowcase } from "~/component/auth-showcase";
 import { useTRPC } from "~/lib/trpc";
@@ -209,7 +209,7 @@ function PostCard(props: { post: RouterOutputs["post"]["all"][number] }) {
         <Button
           variant="ghost"
           className="text-primary cursor-pointer text-sm font-bold uppercase hover:bg-transparent hover:text-white"
-          onClick={() => deletePost.mutate(props.post.id)}
+          onClick={() => deletePost.mutate({ id: props.post.id })}
         >
           Delete
         </Button>
