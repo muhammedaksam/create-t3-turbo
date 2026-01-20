@@ -160,7 +160,7 @@ export default function Index() {
           renderItem={(p) => (
             <PostCard
               post={p.item}
-              onDelete={() => deletePostMutation.mutate(p.item.id)}
+              onDelete={() => deletePostMutation.mutate({ id: p.item.id })}
             />
           )}
         />
