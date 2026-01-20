@@ -53,3 +53,6 @@ dist/
 
 # tanstack
 .tanstack
+
+# prisma generated files (will be added during migration)
+packages/db/generated/
