@@ -18,6 +18,17 @@ const config = {
 
   /** We already do linting and typechecking as separate tasks in CI */
   typescript: { ignoreBuildErrors: true },
+
+  /** Proxy API requests to the API server to solve cross-origin cookie issues in development */
+  async rewrites() {
+    const apiUrl = process.env.API_URL || "http://localhost:3002";
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${apiUrl}/api/:path*`,
+      },
+    ];
+  },
 };
 
 export default config;

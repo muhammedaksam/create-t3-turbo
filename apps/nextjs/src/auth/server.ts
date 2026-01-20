@@ -8,6 +8,7 @@ import { initAuth } from "@acme/auth";
 
 import { env } from "~/env";
 
+// Point to the API server for auth
 const baseUrl =
   env.VERCEL_ENV === "production"
     ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`
@@ -17,7 +18,8 @@ const baseUrl =
 
 export const auth = initAuth({
   baseUrl,
-  productionUrl: `https://${env.VERCEL_PROJECT_PRODUCTION_URL ?? "turbo.t3.gg"}`,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  productionUrl: env.API_URL,
   secret: env.AUTH_SECRET,
   discordClientId: env.AUTH_DISCORD_ID,
   discordClientSecret: env.AUTH_DISCORD_SECRET,
