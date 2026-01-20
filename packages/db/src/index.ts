@@ -1,2 +1,3 @@
-export * from "drizzle-orm/sql";
-export { alias } from "drizzle-orm/pg-core";
+export { db, prisma } from "./client";
+export * from "../generated/prisma";
+export * from "./validators";

@@ -1,10 +1,14 @@
-import { sql } from "@vercel/postgres";
-import { drizzle } from "drizzle-orm/vercel-postgres";
+import { PrismaClient } from "../generated/prisma";
 
-import * as schema from "./schema";
+const globalForPrisma = globalThis as typeof globalThis & {
+  prisma?: PrismaClient;
+};
 
-export const db = drizzle({
-  client: sql,
-  schema,
-  casing: "snake_case",
-});
+export const db = globalForPrisma.prisma ?? new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = db;
+}
+
+// Backwards compatibility alias
+export { db as prisma };
