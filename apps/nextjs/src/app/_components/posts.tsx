@@ -8,7 +8,6 @@ import {
 } from "@tanstack/react-query";
 
 import type { RouterOutputs } from "@acme/api";
-import { CreatePostSchema } from "@acme/db/schema";
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 import {
@@ -20,6 +19,7 @@ import {
 } from "@acme/ui/field";
 import { Input } from "@acme/ui/input";
 import { toast } from "@acme/ui/toast";
+import { CreatePostSchema } from "@acme/validators";
 
 import { useTRPC } from "~/trpc/react";
 
@@ -174,7 +174,7 @@ export function PostCard(props: {
         <Button
           variant="ghost"
           className="text-primary cursor-pointer text-sm font-bold uppercase hover:bg-transparent hover:text-white"
-          onClick={() => deletePost.mutate(props.post.id)}
+          onClick={() => deletePost.mutate({ id: props.post.id })}
         >
           Delete
         </Button>
