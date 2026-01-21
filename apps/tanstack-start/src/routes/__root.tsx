@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 import type { QueryClient } from "@tanstack/react-query";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
+import type { i18n } from "i18next";
 import type * as React from "react";
 import {
   createRootRouteWithContext,
@@ -19,6 +20,7 @@ import appCss from "~/styles.css?url";
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   trpc: TRPCOptionsProxy<AppRouter>;
+  i18n: i18n;
 }>()({
   head: () => ({
     links: [{ rel: "stylesheet", href: appCss }],

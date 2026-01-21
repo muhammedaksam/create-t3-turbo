@@ -1,10 +1,12 @@
 import { useNavigate } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@acme/ui/button";
 
 import { authClient } from "~/auth/client";
 
 export function AuthShowcase() {
+  const { t } = useTranslation();
   const { data: session } = authClient.useSession();
   const navigate = useNavigate();
 
@@ -23,7 +25,7 @@ export function AuthShowcase() {
           await navigate({ href: res.data.url, replace: true });
         }}
       >
-        Sign in with Discord
+        {t("auth.signInWithDiscord")}
       </Button>
     );
   }
@@ -31,7 +33,7 @@ export function AuthShowcase() {
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="text-center text-2xl">
-        <span>Logged in as {session.user.name}</span>
+        <span>{t("auth.loggedInAs", { name: session.user.name })}</span>
       </p>
 
       <Button
@@ -41,7 +43,7 @@ export function AuthShowcase() {
           await navigate({ href: "/", replace: true });
         }}
       >
-        Sign out
+        {t("auth.signOut")}
       </Button>
     </div>
   );
