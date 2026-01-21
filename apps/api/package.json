@@ -17,11 +17,11 @@
     "@acme/auth": "workspace:*",
     "@acme/db": "workspace:*",
     "@acme/validators": "workspace:*",
-    "@t3-oss/env-nextjs": "^0.13.8",
+    "@t3-oss/env-nextjs": "catalog:",
     "@trpc/server": "catalog:",
     "better-auth": "catalog:",
     "next": "catalog:",
-    "superjson": "2.2.3",
+    "superjson": "catalog:",
     "trpc-to-openapi": "^3.1.0",
     "zod": "catalog:"
   },
@@ -31,7 +31,7 @@
     "@acme/tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "eslint": "catalog:",
-    "jiti": "^2.5.1",
+    "jiti": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
   },

@@ -19,7 +19,7 @@
     "@acme/db": "workspace:*",
     "@acme/validators": "workspace:*",
     "@trpc/server": "catalog:",
-    "superjson": "2.2.3",
+    "superjson": "catalog:",
     "trpc-to-openapi": "^3.1.0",
     "zod": "catalog:"
   },
