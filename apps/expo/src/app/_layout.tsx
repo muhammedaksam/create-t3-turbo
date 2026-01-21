@@ -5,6 +5,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 
 import { queryClient } from "~/utils/api";
 
+import "~/utils/i18n"; // Initialize i18n
+
 import "../styles.css";
 
 // This is the main layout of the app

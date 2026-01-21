@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Stack } from "expo-router";
 import { LegendList } from "@legendapp/list";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 import type { RouterOutputs } from "~/utils/api";
 import { trpc } from "~/utils/api";
@@ -13,6 +14,8 @@ function PostCard(props: {
   post: RouterOutputs["post"]["all"][number];
   onDelete: () => void;
 }) {
+  const { t } = useTranslation();
+
   return (
     <View className="bg-muted flex flex-row rounded-lg p-4">
       <View className="grow">
@@ -32,13 +35,17 @@ function PostCard(props: {
         </Link>
       </View>
       <Pressable onPress={props.onDelete}>
-        <Text className="text-primary font-bold uppercase">Delete</Text>
+        <Text className="text-primary font-bold uppercase">
+          {t("post.delete")}
+        </Text>
       </Pressable>
     </View>
   );
 }
 
 function CreatePost() {
+  const { t } = useTranslation();
+
   const queryClient = useQueryClient();
 
   const [title, setTitle] = useState("");
@@ -60,7 +67,7 @@ function CreatePost() {
         className="border-input bg-background text-foreground items-center rounded-md border px-3 text-lg leading-tight"
         value={title}
         onChangeText={setTitle}
-        placeholder="Title"
+        placeholder={t("post.title")}
       />
       {error?.data?.zodError?.fieldErrors.title && (
         <Text className="text-destructive mb-2">
@@ -71,7 +78,7 @@ function CreatePost() {
         className="border-input bg-background text-foreground items-center rounded-md border px-3 text-lg leading-tight"
         value={content}
         onChangeText={setContent}
-        placeholder="Content"
+        placeholder={t("post.content")}
       />
       {error?.data?.zodError?.fieldErrors.content && (
         <Text className="text-destructive mb-2">
@@ -87,24 +94,25 @@ function CreatePost() {
           });
         }}
       >
-        <Text className="text-foreground">Create</Text>
+        <Text className="text-foreground">{t("post.create")}</Text>
       </Pressable>
       {error?.data?.code === "UNAUTHORIZED" && (
-        <Text className="text-destructive mt-2">
-          You need to be logged in to create a post
-        </Text>
+        <Text className="text-destructive mt-2">{t("post.unauthorized")}</Text>
       )}
     </View>
   );
 }
 
 function MobileAuth() {
+  const { t } = useTranslation();
   const { data: session } = authClient.useSession();
 
   return (
     <>
       <Text className="text-foreground pb-2 text-center text-xl font-semibold">
-        {session?.user.name ? `Hello, ${session.user.name}` : "Not logged in"}
+        {session?.user.name
+          ? t("auth.loggedInAs", { name: session.user.name })
+          : t("auth.notLoggedIn")}
       </Text>
       <Pressable
         onPress={() =>
@@ -117,13 +125,15 @@ function MobileAuth() {
         }
         className="bg-primary flex items-center rounded-sm p-2"
       >
-        <Text>{session ? "Sign Out" : "Sign In With Discord"}</Text>
+        <Text>{session ? t("auth.signOut") : t("auth.signInWithDiscord")}</Text>
       </Pressable>
     </>
   );
 }
 
 export default function Index() {
+  const { t } = useTranslation();
+
   const queryClient = useQueryClient();
 
   const postQuery = useQuery(trpc.post.all.queryOptions());
@@ -138,7 +148,7 @@ export default function Index() {
   return (
     <SafeAreaView className="bg-background">
       {/* Changes page title visible on the header */}
-      <Stack.Screen options={{ title: "Home Page" }} />
+      <Stack.Screen options={{ title: t("navigation.home") }} />
       <View className="bg-background h-full w-full p-4">
         <Text className="text-foreground pb-2 text-center text-5xl font-bold">
           Create <Text className="text-primary">T3</Text> Turbo
@@ -148,7 +158,7 @@ export default function Index() {
 
         <View className="py-2">
           <Text className="text-primary font-semibold italic">
-            Press on a post
+            {t("post.press")}
           </Text>
         </View>
 
