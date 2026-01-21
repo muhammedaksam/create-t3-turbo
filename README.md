@@ -42,16 +42,19 @@ apps
   │   ├─ React Native 0.81 using React 19
   │   ├─ Navigation using Expo Router
   │   ├─ Tailwind CSS v4 using NativeWind v5
+  │   ├─ Internationalization using react-i18next
   │   └─ Typesafe API calls using tRPC
   ├─ nextjs
   │   ├─ Next.js 16
   │   ├─ React 19
   │   ├─ Tailwind CSS v4
+  │   ├─ Internationalization using next-intl
   │   └─ Proxies API requests to the API server
   └─ tanstack-start
       ├─ Tanstack Start v1
       ├─ React 19
       ├─ Tailwind CSS v4
+      ├─ Internationalization using react-i18next
       └─ Calls API server via HTTP for tRPC
 packages
   ├─ api
@@ -60,6 +63,8 @@ packages
   │   └─ Authentication using better-auth
   ├─ db
   │   └─ Typesafe db calls using Prisma & PostgreSQL
+  ├─ i18n
+  │   └─ Shared internationalization resources (en, tr)
   ├─ validators
   │   └─ Shared Zod validation schemas
   └─ ui
@@ -182,6 +187,89 @@ When the component(s) has been installed, you should be good to go and start usi
 To add a new package, simply run `pnpm turbo gen init` in the monorepo root. This will prompt you for a package name as well as if you want to install any dependencies to the new package (of course you can also do this yourself later).
 
 The generator sets up the `package.json`, `tsconfig.json` and a `index.ts`, as well as configures all the necessary configurations for tooling around your package such as formatting, linting and typechecking. When the package is created, you're ready to go build out the package.
+
+## Internationalization (i18n)
+
+This monorepo includes a shared internationalization setup via the `@acme/i18n` package. Translations are centrally managed and used across all apps.
+
+### Available Languages
+
+- **English (en)** - Default language
+- **Turkish (tr)**
+
+### Shared Translation Package
+
+All translation files are located in `packages/i18n/src/locales/` and organized by namespace:
+
+- `auth.json` - Authentication-related translations
+- `common.json` - Common UI elements (buttons, labels, etc.)
+- `navigation.json` - Navigation menu items
+- `post.json` - Post/content-related translations
+
+### Usage by App
+
+#### Next.js (`apps/nextjs`)
+
+Uses **next-intl** for internationalization:
+
+```tsx
+import { useTranslations } from "next-intl";
+
+function MyComponent() {
+  const t = useTranslations();
+  return <button>{t("auth.signOut")}</button>;
+}
+```
+
+#### TanStack Start (`apps/tanstack-start`)
+
+Uses **react-i18next** with a custom configuration:
+
+```tsx
+import { useTranslation } from "react-i18next";
+
+function MyComponent() {
+  const { t, i18n } = useTranslation();
+
+  // Use translations
+  return <button>{t("auth.signOut")}</button>;
+
+  // Change language
+  i18n.changeLanguage("tr");
+}
+```
+
+#### Expo (`apps/expo`)
+
+Uses **react-i18next** with expo-localization:
+
+```tsx
+import { useTranslation } from "react-i18next";
+
+function MyComponent() {
+  const { t } = useTranslation();
+  return <Text>{t("auth.signOut")}</Text>;
+}
+```
+
+### Adding New Translations
+
+1. Add your translation keys to the appropriate namespace file in both language folders:
+   - `packages/i18n/src/locales/en/{namespace}.json`
+   - `packages/i18n/src/locales/tr/{namespace}.json`
+
+2. Run `pnpm format:fix` to automatically sort the keys alphabetically
+
+3. The translations will be automatically available in all apps
+
+### VS Code Extension
+
+This repo includes configuration for the [i18n Ally](https://marketplace.visualstudio.com/items?itemName=Lokalise.i18n-ally) VS Code extension, which provides:
+
+- Inline translation preview
+- Auto-completion for translation keys
+- Quick navigation to translation files
+- Automatic key sorting
 
 ## FAQ
 
