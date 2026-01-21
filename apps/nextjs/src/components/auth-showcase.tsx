@@ -1,11 +1,13 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 
 import { Button } from "@acme/ui/button";
 
 import { auth, getSession } from "~/auth/server";
 
 export async function AuthShowcase() {
+  const t = await getTranslations();
   const session = await getSession();
 
   if (!session) {
@@ -27,7 +29,7 @@ export async function AuthShowcase() {
             redirect(res.url);
           }}
         >
-          Sign in with Discord
+          {t("auth.signInWithDiscord")}
         </Button>
       </form>
     );
@@ -36,7 +38,7 @@ export async function AuthShowcase() {
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="text-center text-2xl">
-        <span>Logged in as {session.user.name}</span>
+        <span>{t("auth.loggedInAs", { name: session.user.name })}</span>
       </p>
 
       <form>
@@ -50,7 +52,7 @@ export async function AuthShowcase() {
             redirect("/");
           }}
         >
-          Sign out
+          {t("auth.signOut")}
         </Button>
       </form>
     </div>

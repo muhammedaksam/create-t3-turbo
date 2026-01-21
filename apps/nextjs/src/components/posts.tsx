@@ -6,6 +6,7 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 import type { RouterOutputs } from "@acme/api";
 import { cn } from "@acme/ui";
@@ -24,6 +25,7 @@ import { CreatePostSchema } from "@acme/validators";
 import { useTRPC } from "~/trpc/react";
 
 export function CreatePostForm() {
+  const t = useTranslations();
   const trpc = useTRPC();
 
   const queryClient = useQueryClient();
@@ -36,8 +38,8 @@ export function CreatePostForm() {
       onError: (err) => {
         toast.error(
           err.data?.code === "UNAUTHORIZED"
-            ? "You must be logged in to post"
-            : "Failed to create post",
+            ? t("post.unauthorized")
+            : t("post.failedToCreate"),
         );
       },
     }),
@@ -71,7 +73,9 @@ export function CreatePostForm() {
             return (
               <Field data-invalid={isInvalid}>
                 <FieldContent>
-                  <FieldLabel htmlFor={field.name}>Bug Title</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>
+                    {t("post.title")}
+                  </FieldLabel>
                 </FieldContent>
                 <Input
                   id={field.name}
@@ -80,7 +84,7 @@ export function CreatePostForm() {
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
                   aria-invalid={isInvalid}
-                  placeholder="Title"
+                  placeholder={t("post.title")}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
@@ -95,7 +99,9 @@ export function CreatePostForm() {
             return (
               <Field data-invalid={isInvalid}>
                 <FieldContent>
-                  <FieldLabel htmlFor={field.name}>Content</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>
+                    {t("post.content")}
+                  </FieldLabel>
                 </FieldContent>
                 <Input
                   id={field.name}
@@ -104,7 +110,7 @@ export function CreatePostForm() {
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
                   aria-invalid={isInvalid}
-                  placeholder="Content"
+                  placeholder={t("post.content")}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
@@ -112,12 +118,13 @@ export function CreatePostForm() {
           }}
         />
       </FieldGroup>
-      <Button type="submit">Create</Button>
+      <Button type="submit">{t("post.create")}</Button>
     </form>
   );
 }
 
 export function PostList() {
+  const t = useTranslations();
   const trpc = useTRPC();
   const { data: posts } = useSuspenseQuery(trpc.post.all.queryOptions());
 
@@ -129,7 +136,7 @@ export function PostList() {
         <PostCardSkeleton pulse={false} />
 
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/10">
-          <p className="text-2xl font-bold text-white">No posts yet</p>
+          <p className="text-2xl font-bold text-white">{t("post.noPosts")}</p>
         </div>
       </div>
     );
@@ -147,6 +154,7 @@ export function PostList() {
 export function PostCard(props: {
   post: RouterOutputs["post"]["all"][number];
 }) {
+  const t = useTranslations();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const deletePost = useMutation(
@@ -157,8 +165,8 @@ export function PostCard(props: {
       onError: (err) => {
         toast.error(
           err.data?.code === "UNAUTHORIZED"
-            ? "You must be logged in to delete a post"
-            : "Failed to delete post",
+            ? t("post.unauthorized")
+            : t("post.failedToDelete"),
         );
       },
     }),
@@ -176,7 +184,7 @@ export function PostCard(props: {
           className="text-primary cursor-pointer text-sm font-bold uppercase hover:bg-transparent hover:text-white"
           onClick={() => deletePost.mutate({ id: props.post.id })}
         >
-          Delete
+          {t("post.delete")}
         </Button>
       </div>
     </div>

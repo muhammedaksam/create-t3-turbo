@@ -1,9 +1,12 @@
 import { createJiti } from "jiti";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const jiti = createJiti(import.meta.url);
 
 // Import env files to validate at build time. Use jiti so we can load .ts files in here.
 await jiti.import("./src/env");
+
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -31,4 +34,4 @@ const config = {
   },
 };
 
-export default config;
+export default withNextIntl(config);
