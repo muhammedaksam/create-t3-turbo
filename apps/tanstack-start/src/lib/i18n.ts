@@ -29,7 +29,6 @@ void i18n
     lng: defaultLocale, // default language
     fallbackLng: defaultLocale,
     supportedLngs: locales,
-    defaultNS: "common",
     interpolation: {
       escapeValue: false, // react already safes from xss
       prefix: "{",

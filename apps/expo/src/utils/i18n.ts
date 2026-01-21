@@ -11,7 +11,6 @@ i18n
     resources,
     lng: Localization.getLocales()[0]?.languageCode ?? defaultLocale,
     fallbackLng: defaultLocale,
-    defaultNS: "common",
     interpolation: {
       escapeValue: false, // React already escapes
       prefix: "{",
