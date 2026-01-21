@@ -1,0 +1,11 @@
+{
+  "content": "Content",
+  "create": "Create",
+  "delete": "Delete",
+  "failedToCreate": "Failed to create post",
+  "failedToDelete": "Failed to delete post",
+  "noPosts": "No posts yet",
+  "press": "Press on a post",
+  "title": "Title",
+  "unauthorized": "You must be logged in"
+}

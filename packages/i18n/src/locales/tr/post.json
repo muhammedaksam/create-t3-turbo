@@ -1,0 +1,11 @@
+{
+  "content": "İçerik",
+  "create": "Oluştur",
+  "delete": "Sil",
+  "failedToCreate": "Gönderi oluşturulamadı",
+  "failedToDelete": "Gönderi silinemedi",
+  "noPosts": "Henüz gönderi yok",
+  "press": "Bir gönderiye basın",
+  "title": "Başlık",
+  "unauthorized": "Giriş yapmalısınız"
+}
